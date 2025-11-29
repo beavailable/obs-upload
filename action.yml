@@ -1,0 +1,41 @@
+name: obs-upload
+description: Upload files to OBS (Open Build Service)
+branding:
+  color: green
+  icon: upload-cloud
+inputs:
+  apiurl:
+    description: OBS apiurl
+    required: false
+    default: https://api.opensuse.org
+  username:
+    description: OBS username
+    required: true
+  password:
+    description: OBS password
+    required: true
+  project:
+    description: OBS project
+    required: true
+  package:
+    description: OBS package
+    required: true
+  files:
+    description: Files
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Set Github Path
+      run: echo ${{ github.action_path }} >> $GITHUB_PATH
+      shell: bash
+    - name: Upload
+      run: upload.sh
+      shell: bash
+      env:
+        OBS_APIURL: ${{ inputs.apiurl }}
+        OBS_USERNAME: ${{ inputs.username }}
+        OBS_PASSWORD: ${{ inputs.password }}
+        OBS_PROJECT: ${{ inputs.project }}
+        OBS_PACKAGE: ${{ inputs.package }}
+        OBS_FILES: ${{ inputs.files }}
