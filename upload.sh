@@ -12,11 +12,10 @@ EOF
 url="$OBS_APIURL/source/$OBS_PROJECT/$OBS_PACKAGE"
 
 _curl -F 'cmd=deleteuploadrev' "$url"
-files=$(_curl "$url" | sed -nE 's/^\s+<entry name="([^"]+)".+$/\1/p' | paste -sd ',')
-if [[ -n "$files" ]]; then
-    _curl -X DELETE "$url/{$files}?rev=upload"
+files_to_delete=$(_curl "$url" | sed -nE 's/^\s+<entry name="([^"]+)".+$/\1/p' | paste -sd ',')
+if [[ -n "$files_to_delete" ]]; then
+    _curl -X DELETE "$url/{$files_to_delete}?rev=upload"
 fi
-for f in $OBS_FILES; do
-    _curl -T "$f" "$url/${f#*/}?rev=upload"
-done
+files_to_upload=$(ls $OBS_FILES | paste -sd ',')
+_curl -T "{$files_to_upload}" --url-query '+rev=upload' "$url/"
 _curl -F 'cmd=commit' "$url"
