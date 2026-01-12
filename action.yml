@@ -20,6 +20,10 @@ inputs:
   package:
     description: OBS package
     required: true
+  pre-run:
+    description: Run some commands before everything
+    required: false
+    default: ''
   type:
     description: The type of the package
     required: false
@@ -31,6 +35,9 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Pre-run
+      run: ${{ inputs.pre-run }}
+      shell: bash
     - name: Set Github Path
       run: echo ${{ github.action_path }} >> $GITHUB_PATH
       shell: bash

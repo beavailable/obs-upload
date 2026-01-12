@@ -19,6 +19,9 @@ Required.
 **package**  
 Required.
 
+**pre-run**: Run some commands before everything.  
+Optional, default: `""`.
+
 **type**  
 Optional, default `""`.  
 Available types:
