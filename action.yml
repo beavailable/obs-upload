@@ -36,6 +36,7 @@ runs:
   using: composite
   steps:
     - name: Pre-run
+      if: ${{ inputs.pre-run != '' }}
       run: ${{ inputs.pre-run }}
       shell: bash
     - name: Set Github Path
